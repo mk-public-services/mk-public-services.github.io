@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: intl-76.1
+
+      - uses: php-actions/composer@v6
+        with:
+          php_extensions: intl-76.1
+    
+      - name: Validate certificates
+        run: php cli.php ValidCertificates
+
+      - name: Validate robots.txt and sitemap
+        run: php cli.php RobotsAndSitemap
+
+      - name: Export for web
+        run: php cli.php ExportForWeb
+      
+      #- name: Save to archive
+      #  run: php cli.php SaveToArchive
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+  deploy:
+    permissions:
+      contents: 'read'
+      pages: 'write'
+      id-token: 'write'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
