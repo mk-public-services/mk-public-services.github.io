@@ -12,10 +12,14 @@ class ExportForWeb
     {
         $certs = json_decode(file_get_contents(App::docs() . '/valid-certificates.json'), true);
         $robotsAndSitemap = json_decode(file_get_contents(App::docs() . '/robots-and-sitemap.json'), true);
+        $newsfeeds = json_decode(file_get_contents(App::docs() . '/newsfeeds.json'), true);
 
         $data = $robotsAndSitemap;
         foreach ($certs as $web => $value) {
             $data[$web]['cert'] = $value;
+        }
+        foreach ($newsfeeds as $web => $value) {
+            $data[$web]['feed'] = $value;
         }
 
         foreach ($data as &$d) {
@@ -25,6 +29,8 @@ class ExportForWeb
             if ($d['robots'] == 1)
                 $d['score']++;
             if ($d['sitemap'] != 0)
+                $d['score']++;
+            if ($d['feed'] != 0)
                 $d['score']++;
         }
 

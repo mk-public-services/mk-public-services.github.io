@@ -15,6 +15,7 @@
                 <th>Сертификат</th>
                 <th>robots.txt</th>
                 <th>Sitemap</th>
+                <th>Feed</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@
                     <td><?= $v['cert'] ? '&#x2705;' : '&#x274C;' ?></td>
                     <td><?= $v['robots'] ? '&#x2705;' : '&#x274C;' ?></td>
                     <td><?= $v['sitemap'] == 0 ? '&#x274C;' : '&#x2705;' ?></td>
+                    <td><?= $v['feed'] == 0 ? '&#x274C;' : '&#x2705;' ?></td>
                 </tr>
             <?php } ?>
         </tbody>

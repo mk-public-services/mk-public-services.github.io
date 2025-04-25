@@ -30,6 +30,9 @@ jobs:
       - name: Validate robots.txt and sitemap
         run: php cli.php RobotsAndSitemap
 
+      - name: Find feeds
+        run: php cli.php FindFeed
+
       - name: Export for web
         run: php cli.php ExportForWeb
       
