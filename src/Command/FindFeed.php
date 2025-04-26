@@ -51,6 +51,7 @@ class FindFeed
                         $href = rtrim($base, '/') . '/' . ltrim($href, '/');
                     }
                     if ($this->isValidRss($href)) {
+                        return true; // comment this to return feed urls
                         $feeds[] = $href;
                     }
                 }
@@ -62,6 +63,7 @@ class FindFeed
         foreach ($commonPaths as $path) {
             $testUrl = rtrim($base, '/') . $path;
             if ($this->isValidRss($testUrl)) {
+                return true; // comment this to return feed urls
                 $feeds[] = $testUrl;
             }
         }
