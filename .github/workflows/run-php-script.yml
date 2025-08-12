@@ -18,11 +18,11 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: intl-76.1
+          extensions: intl-77.1
 
       - uses: php-actions/composer@v6
         with:
-          php_extensions: intl-76.1
+          php_extensions: intl-77.1
     
       - name: Validate certificates
         run: php cli.php ValidCertificates
