@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    <span class="refreshed">Освежено на <?php echo date('d-m-Y H:i:s'); ?></span>
     <table>
         <thead>
             <tr>
@@ -37,7 +38,7 @@
     <footer>
         <ul>
             <li>
-                <a href="#"><img src="./img/github-mark.svg" alt="link to github repo" /></a>
+                <a href="https://github.com/mk-public-services/mk-public-services.github.io"><img src="./img/github-mark.svg" alt="link to github repo" /></a>
             </li>
         </ul>
     </footer>
