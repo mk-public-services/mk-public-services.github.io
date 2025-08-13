@@ -36,7 +36,7 @@ class FindFeed
 
         // Step 1: Look in HTML <link> tags
         $html = @file_get_contents($url);
-        if ($html !== false) {
+        if (!empty($html)) {
             libxml_use_internal_errors(true);
             $dom = new \DOMDocument();
             $dom->loadHTML($html);
