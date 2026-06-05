@@ -1,0 +1,50 @@
+name: Monthly MK Gov Site Evaluation
+
+on:
+    push:
+        branches:
+            - main
+        paths-ignore:
+            - "results.json"
+            - "docs/index.html"
+    schedule:
+        - cron: "0 6 1 * *" # 06:00 UTC on the 1st of every month
+    workflow_dispatch: # allow manual runs from the Actions tab
+
+permissions:
+    contents: write
+
+jobs:
+    evaluate:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.12"
+
+            - name: Run evaluations
+              run: python evaluate.py
+              continue-on-error: true # don't fail the job if sites are down
+
+            - name: Generate HTML report
+              run: python generate_report.py results.json docs/index.html
+
+            - name: Commit results & report
+              run: |
+                  git config user.name  "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+                  git add results.json docs/index.html
+                  git diff --cached --quiet || git commit -m "eval: monthly run $(date -u '+%Y-%m-%d')"
+                  git push
+
+            - name: Deploy to GitHub Pages
+              uses: peaceiris/actions-gh-pages@v4
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./docs
+                  publish_branch: gh-pages
